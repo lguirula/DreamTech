@@ -20,10 +20,11 @@ class VentanaPrincipal(QMainWindow):
             self.instrucciones()
 
     def instrucciones(self):
-        f = open('Instrucciones.txt','r')
-        lines=f.readlines()
-        [print(linea) for linea in f.readlines()]
-        #self.lb_consigna.setText(str(lines[0]) )
+        with open('Instrucciones.txt') as inst:
+            text = inst.read()
+        labels = text.split('#')
+        print(labels)
+        self.lb_consigna.setText(str(labels[0]) )
         
 
 
