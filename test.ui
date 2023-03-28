@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="styleSheet">
+       <string notr="true">QFrame{
+	background-color: rgb(255, 255, 255);
+}
+
+QLabel {
+color:rgb(0,0,0);
+font:77 20pt &quot;Arial Black&quot;;
+qproperty-alignment: AlignCenter
+}
+QPushButton{
+background-color:rgb(61,61,61);
+border-top-left-radius: 25px;
+border-bottom-left-radius: 20px;
+	
+color:rgb(255,255,255);
+font:77 20pt &quot;Arial Black&quot;;
+}
+QPushButton:hover{
+background-color:rgb(95,95,95);
+border-top-left-radius: 20px;
+border-bottom-left-radius: 20px;
+color:rgb(0,0,0);
+font:77 20pt &quot;Arial Black&quot;;
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QStackedWidget" name="stackedWidget">
+         <property name="styleSheet">
+          <string notr="true">QFrame{
+	background-color: rgb(255, 255, 255);
+}
+
+QLabel {
+color:rgb(0,0,0);
+font:77 20pt &quot;Arial Black&quot;;
+qproperty-alignment: AlignCenter;
+}
+QPushButton{
+background-color:rgb(61,61,61);
+border-top-left-radius: 25px;
+border-bottom-left-radius: 20px;
+	
+color:rgb(255,255,255);
+font:77 20pt &quot;Arial Black&quot;;
+}
+QPushButton:hover{
+background-color:rgb(95,95,95);
+border-top-left-radius: 20px;
+border-bottom-left-radius: 20px;
+color:rgb(0,0,0);
+font:77 20pt &quot;Arial Black&quot;;
+}</string>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="consigna">
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QLabel" name="lb_consigna">
+             <property name="font">
+              <font>
+               <family>Arial Black</family>
+               <pointsize>20</pointsize>
+               <weight>9</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="bt_start">
+             <property name="font">
+              <font>
+               <family>Arial Black</family>
+               <pointsize>20</pointsize>
+               <weight>9</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Empezar</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="palabra">
+          <property name="styleSheet">
+           <string notr="true">QFrame{
+	background-color: rgb(255, 255, 255);
+}
+
+QLabel {
+color:rgb(0,0,0);
+font:77 20pt &quot;Arial Black&quot;;
+}
+QPushButton{
+background-color:rgb(61,61,61);
+border-top-left-radius: 25px;
+border-bottom-left-radius: 20px;
+	
+color:rgb(255,255,255);
+font:77 20pt &quot;Arial Black&quot;;
+}
+QPushButton:hover{
+background-color:rgb(95,95,95);
+border-top-left-radius: 20px;
+border-bottom-left-radius: 20px;
+color:rgb(0,0,0);
+font:77 20pt &quot;Arial Black&quot;;
+}</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
