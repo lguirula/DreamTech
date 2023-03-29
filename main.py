@@ -23,7 +23,7 @@ class VentanaPrincipal(QMainWindow):
             self.t = threading.Timer(0.5, self.instrucciones)
             self.t.start()
             #self.mostrar()
-            self.t2 = threading.Timer(0.5, self.mostrar)
+            self.t2 = threading.Timer(10, self.mostrar)
             self.t2.start()
             #Conexion de Botones
             self.bt_start.clicked.connect(lambda:self.stackedWidget.setCurrentWidget(self.palabra))
