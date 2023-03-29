@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>669</width>
     <height>600</height>
    </rect>
   </property>
@@ -79,7 +79,7 @@ font:77 20pt &quot;Arial Black&quot;;
 }</string>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="consigna">
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -154,7 +154,7 @@ font:77 20pt &quot;Arial Black&quot;;
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="lb_palabra">
                <property name="text">
                 <string/>
                </property>
@@ -183,7 +183,7 @@ font:77 20pt &quot;Arial Black&quot;;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>669</width>
      <height>21</height>
     </rect>
    </property>
