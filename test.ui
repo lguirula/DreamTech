@@ -29,18 +29,13 @@ qproperty-alignment: AlignCenter
 }
 QPushButton{
 background-color:rgb(61,61,61);
-border-top-left-radius: 25px;
-border-bottom-left-radius: 20px;
-	
+border-radius: 25px;
 color:rgb(255,255,255);
 font:77 20pt &quot;Arial Black&quot;;
 }
 QPushButton:hover{
 background-color:rgb(95,95,95);
-border-top-left-radius: 20px;
-border-bottom-left-radius: 20px;
 color:rgb(0,0,0);
-font:77 20pt &quot;Arial Black&quot;;
 }</string>
       </property>
       <property name="frameShape">
@@ -64,22 +59,17 @@ qproperty-alignment: AlignCenter;
 }
 QPushButton{
 background-color:rgb(61,61,61);
-border-top-left-radius: 25px;
-border-bottom-left-radius: 20px;
-	
+border-radius: 25px;
 color:rgb(255,255,255);
 font:77 20pt &quot;Arial Black&quot;;
 }
 QPushButton:hover{
 background-color:rgb(95,95,95);
-border-top-left-radius: 20px;
-border-bottom-left-radius: 20px;
 color:rgb(0,0,0);
-font:77 20pt &quot;Arial Black&quot;;
 }</string>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="consigna">
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -138,30 +128,18 @@ font:77 20pt &quot;Arial Black&quot;;
 }
 QPushButton{
 background-color:rgb(61,61,61);
-border-top-left-radius: 25px;
-border-bottom-left-radius: 20px;
-	
+border-radius: 25px;
 color:rgb(255,255,255);
 font:77 20pt &quot;Arial Black&quot;;
 }
 QPushButton:hover{
 background-color:rgb(95,95,95);
-border-top-left-radius: 20px;
-border-bottom-left-radius: 20px;
 color:rgb(0,0,0);
-font:77 20pt &quot;Arial Black&quot;;
 }</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_2">
-             <item>
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
              <item>
               <widget class="QLabel" name="lb_palabra">
                <property name="text">
@@ -170,13 +148,73 @@ font:77 20pt &quot;Arial Black&quot;;
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_3">
-               <property name="text">
-                <string/>
+              <widget class="QFrame" name="frame_2">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>100</height>
+                </size>
                </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QPushButton" name="btn_record">
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton{
+                        background-color: rgb(191, 191, 191);
+border-radius: 25px;
+width: 50px;
+height: 50px;
+max-width: 50px;
+max-height: 50px;
+}
+QPushButton:hover{
+background-color: rgb(100, 100, 100);
+}</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>25</width>
+                    <height>25</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
             </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="final_exp">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QFrame" name="frame_3">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>¡Gracias por participar!</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </item>
           </layout>
          </widget>

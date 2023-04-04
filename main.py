@@ -1,22 +1,30 @@
 import sys
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
+from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QApplication, QMainWindow, QHeaderView
 from PyQt5.QtCore import QPropertyAnimation,QEasingCurve
 from PyQt5 import QtWidgets,QtCore
 from PyQt5.uic import loadUi
 import json
-import time # para delays
-import threading
+
+import sounddevice as sd
+from scipy.io.wavfile import write
+
+fs = 44100  # Sample rate
+seconds = 4  # Duration of recording
 
 class VentanaPrincipal(QMainWindow):
     def __init__(self):
             super(VentanaPrincipal,self).__init__()
+            self.setWindowTitle("DreamTech")
+            # self.setWindowIcon("")
             loadUi('test.ui',self)  # Uso el diseño sin necesitar el codigo
             # Arranca con la pantalla de consignas
             self.stackedWidget.setCurrentWidget(self.consigna) 
             # Conexion de Botones
             self.bt_start.clicked.connect(lambda: self.recordWords())
+            self.bt_start.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
             self.bt_start.hide()
             # Muestra instrucciones
             self.instructions()
@@ -46,18 +54,27 @@ class VentanaPrincipal(QMainWindow):
         with open("data/data.json","r") as f:
            data = json.load(f)
         self.word_labels = data['palabra']
-        self.lb_palabra.setText(self.word_labels[0])
-        self.idx_words = 1
-        self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.updateWords)
-        self.timer.start(4*1000)
+        self.idx_words = 0
+        self.updateWords()
+        self.btn_record.setText("R")
+        self.btn_record.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
+        self.btn_record.clicked.connect(lambda: self.recordAudio())
 
     def updateWords(self):
         if self.idx_words >= len(self.word_labels):
-            self.timer.stop()
+            self.stackedWidget.setCurrentWidget(self.final_exp)
         else:
             self.lb_palabra.setText(self.word_labels[self.idx_words])
+            self.btn_record.setEnabled(True)
+
+    def recordAudio(self):
+        if self.idx_words < len(self.word_labels):
+            self.btn_record.setEnabled(False)
+            myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
+            sd.wait()  # Wait until recording is finished
+            write(f'out/audio-{self.word_labels[self.idx_words]}.wav', fs, myrecording)  # Save as WAV file 
             self.idx_words += 1
+            self.updateWords()
 
     '''
     def start(self):
