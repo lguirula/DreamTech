@@ -1,4 +1,5 @@
 import sys
+import os
 
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtGui import QCursor
@@ -20,16 +21,18 @@ class VentanaPrincipal(QMainWindow):
             self.setWindowTitle("DreamTech")
             # self.setWindowIcon("")
             loadUi('test.ui',self)  # Uso el diseño sin necesitar el codigo
-            # Arranca con la pantalla de consignas
-            self.stackedWidget.setCurrentWidget(self.consigna) 
-            # Conexion de Botones
-            self.bt_start.clicked.connect(lambda: self.recordWords())
-            self.bt_start.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
-            self.bt_start.hide()
-            # Muestra instrucciones
-            self.instructions()
+            self.stackedWidget.setCurrentWidget(self.login)
+            self.userData()
+
+    def userData(self):        
+        self.bt_cont.clicked.connect(lambda: self.instructions())
+        self.bt_cont.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
 
     def instructions(self):
+        self.stackedWidget.setCurrentWidget(self.consigna)
+        self.bt_start.clicked.connect(lambda: self.recordWords())
+        self.bt_start.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
+        self.bt_start.hide()
         with open('data/Instrucciones.txt') as inst:
             text = inst.read()
         self.inst_labels = text.split('#')
@@ -72,7 +75,9 @@ class VentanaPrincipal(QMainWindow):
             self.btn_record.setEnabled(False)
             myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
             sd.wait()  # Wait until recording is finished
-            write(f'out/audio-{self.word_labels[self.idx_words]}.wav', fs, myrecording)  # Save as WAV file 
+            if not os.path.exists(f'out/{self.enter_name.text()}'):
+                os.makedirs(f'out/{self.enter_name.text()}')
+            write(f'out/{self.enter_name.text()}/{self.word_labels[self.idx_words]}.wav', fs, myrecording)  # Save as WAV file 
             self.idx_words += 1
             self.updateWords()
 
