@@ -22,7 +22,7 @@ class VentanaPrincipal(QMainWindow):
             self.instructions()
 
     def instructions(self):
-        with open('Instrucciones.txt') as inst:
+        with open('data/Instrucciones.txt') as inst:
             text = inst.read()
         self.inst_labels = text.split('#')
         self.lb_consigna.setText(self.inst_labels[0])
@@ -41,7 +41,9 @@ class VentanaPrincipal(QMainWindow):
 
     def recordWords(self):
         self.stackedWidget.setCurrentWidget(self.palabra)
-        with open("data.json","r") as f:
+        # self.btn_record.setIcon(QtGui.QIcon('mic.png'))
+        # self.btn_record.setIconSize(QtCore.QSize(24,24))
+        with open("data/data.json","r") as f:
            data = json.load(f)
         self.word_labels = data['palabra']
         self.lb_palabra.setText(self.word_labels[0])

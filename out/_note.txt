@@ -1,0 +1,2 @@
+En esta carpeta aparecerán los archivos resultantes del experimento.
+Se creará una carpeta con el nombre de la persona, y dentro de la misma los archivos de sonido para cada prompt.
