@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>669</width>
-    <height>600</height>
+    <width>856</width>
+    <height>590</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,7 +79,7 @@ font:77 20pt &quot;Arial Black&quot;;
 }</string>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="consigna">
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -101,6 +101,12 @@ font:77 20pt &quot;Arial Black&quot;;
            </item>
            <item>
             <widget class="QPushButton" name="bt_start">
+             <property name="maximumSize">
+              <size>
+               <width>10000</width>
+               <height>50</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <family>Arial Black</family>
@@ -109,6 +115,9 @@ font:77 20pt &quot;Arial Black&quot;;
                <italic>false</italic>
                <bold>false</bold>
               </font>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
              </property>
              <property name="text">
               <string>Empezar</string>
@@ -183,8 +192,8 @@ font:77 20pt &quot;Arial Black&quot;;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>669</width>
-     <height>21</height>
+     <width>856</width>
+     <height>26</height>
     </rect>
    </property>
   </widget>
