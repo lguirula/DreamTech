@@ -1,5 +1,5 @@
 {
-	"audios":["audio/ejemplo.wav","audio/lucian2.wav","audio/VickyP3.wav"],
+	"audios":["assets/audio/ejemplo.wav","assets/audio/lucian2.wav","assets/audio/VickyP3.wav"],
 	"aud_palabra":["aud1","aud2","aud3","aud4","aud5"],
 	"aud_silaba":["sil","sil2","sil3","sil4","sil5"],
 	"palabra":["palabra1","palabra2","palabra3"],

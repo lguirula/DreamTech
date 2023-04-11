@@ -69,7 +69,7 @@ color:rgb(0,0,0);
 }</string>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="login">
           <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -100,7 +100,7 @@ color:rgb(0,0,0);
                 <string notr="true">font-size: 20px;</string>
                </property>
                <property name="text">
-                <string>Antes de arrancar, te pedimos que ingreses tu nombre</string>
+                <string>Ingrese código de sujeto</string>
                </property>
               </widget>
              </item>
@@ -127,7 +127,7 @@ color:rgb(0,0,0);
                   <string notr="true">font-size: 20px;</string>
                  </property>
                  <property name="text">
-                  <string>Nombre</string>
+                  <string>Sujeto</string>
                  </property>
                 </widget>
                </item>
@@ -290,10 +290,10 @@ color:rgb(0,0,0);
                    <string notr="true">QPushButton{
                         background-color: rgb(191, 191, 191);
 border-radius: 25px;
-width: 50px;
-height: 50px;
-max-width: 50px;
-max-height: 50px;
+width: 100px;
+height: 100px;
+max-width: 100px;
+max-height: 100px;
 }
 QPushButton:hover{
 background-color: rgb(100, 100, 100);
@@ -302,10 +302,14 @@ background-color: rgb(100, 100, 100);
                   <property name="text">
                    <string/>
                   </property>
+                  <property name="icon">
+                   <iconset>
+                    <normaloff>assets/images/mic.png</normaloff>assets/images/mic.png</iconset>
+                  </property>
                   <property name="iconSize">
                    <size>
-                    <width>25</width>
-                    <height>25</height>
+                    <width>50</width>
+                    <height>50</height>
                    </size>
                   </property>
                  </widget>
@@ -353,7 +357,7 @@ background-color: rgb(100, 100, 100);
      <x>0</x>
      <y>0</y>
      <width>856</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
