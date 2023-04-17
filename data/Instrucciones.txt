@@ -1,12 +1,9 @@
-BIENVENIDO
-Lo que vas a hacer ahora es completar 
-todas las asociaciones que aprendiste.
+u'¡BIENVENIDO A LA PRIMERA PARTE DE LA TAREA!
+Ahora apareceran diferentes palabras 
+y escucharas sonidos asociados.'
 #
-Vas a escuchar el sonido. 
-Cuando aparezca la imagen del microfono 
-tenes que responder con 
-la palabra completa asociada.
+u'Se van a presentar todas
+las asociaciones de sonido 
+y palabra para que empieces a aprenderlas.
+Presioná ESPACIO para comenzar'
 #
-Habla con una voz clara y fuerte.
-Cuando estes preparado/a para 
-comenzar la tarea presiona EMPEZAR'
