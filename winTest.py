@@ -21,7 +21,7 @@ audio_sil=data['audio_s']
 sil=data['silaba']
 words = ["MIGAJA","RULETA","ENVASE","BUTACA","PILOTO",u'MUÑECA',"SOTANA",u'PEZUÑA',"CASINO","FATIGA","VERANO","COMETA","NOVELA","BOBINA","ALMEJA","MANADA","GUSANO","PAYASO","TIJERA","ZAPATO","RELATO","JUGADA","VISITA",u'LAGAÑA',"MELENA","FOGATA","TOCADO","ESQUINA","NEVADA","DUREZA"]
 
-order_d = [10,2,8,3,5,11,7,1,9,12,6,14,15,4,24,29,17,22,18,23,21,25,16,27,19,26,28,13,30,20]  #displaying order 
+order_d = [10,2,8,3,5,11,7,1,9,12,6,14,15,4,24,29,17,22,18,23,21,25,16,27,19,26,28,13,30,20]  #displaying orders
 order_t = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] #testing order
 
 # initiallize the app

@@ -24,7 +24,7 @@ class VentanaPrincipal(QMainWindow):
             loadUi('TR.ui',self)  # Uso el diseño sin necesitar el codigo
             self.stackedWidget.setCurrentWidget(self.login)
             self.userData()
-            self.showFullScreen()
+            #self.showFullScreen()
 
     def userData(self):        
         self.bt_cont.clicked.connect(lambda: self.instructions())
@@ -61,18 +61,20 @@ class VentanaPrincipal(QMainWindow):
         self.word_labels = data['palabra']
         self.idx_words = 0
         self.word_aud = data['audios']
-        '''
+        
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.updateWords)
-        print("entro a timer")
+        #print("entro a timer")
         self.timer.start(2*1000)
-        '''
-        self.updateWords()
+        
+        #self.updateWords()
         #self.btn_record.setText("R")
         self.btn_record.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
+        #self.btn_record.clicked.connect(lambda: print('boton'))
         self.btn_record.clicked.connect(lambda: self.recordAudio())
 
     def playAudio(self,aud):
+        print('audio play: ',self.idx_words)
         d, f = sf.read(aud, dtype='float32')  
         sd.play(d, f)
         status = sd.wait()
@@ -93,6 +95,7 @@ class VentanaPrincipal(QMainWindow):
     
 
     def recordAudio(self):
+        print('ENTROOO')
         if self.idx_words < len(self.word_labels):
             self.btn_record.setEnabled(False)
             myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
@@ -101,7 +104,7 @@ class VentanaPrincipal(QMainWindow):
                 os.makedirs(f'out/{self.enter_name.text()}')
             write(f'out/{self.enter_name.text()}/{self.word_labels[self.idx_words]}.wav', fs, myrecording)  # Save as WAV file 
             self.idx_words += 1
-            self.updateWords()
+            #self.updateWords()
 
 
 if __name__ == "__main__":
