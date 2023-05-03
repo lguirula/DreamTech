@@ -130,7 +130,7 @@ class App:
                     if event.key == pygame.K_SPACE:
                         self.counter==1
                         
-            '''
+            
             self.text_module.show_message("Vas a ver una lista de palabras, presta atención")
             if self.counter==0:
                 for _, word_idx in enumerate(self.audio_module.display_order):
@@ -142,7 +142,7 @@ class App:
                     self.text_module.show_message(self.audio_module.words[word_idx-1])
                     self.audio_module.play_sound(self.audio_module.audio_word[word_idx-1])
                     pygame.time.wait(1500) #es como time sleep pero en milisegundos
-            '''
+            
             self.text_module.show_message("Presione ESPACIO para continuar a la segunda parte")
             self.wait_for_space()
             
@@ -162,7 +162,7 @@ class App:
                     #pygame.time.wait(2*1000) #es como time sleep pero en milisegundos
                     self.screen.fill((255,255,255))
                     pygame.display.flip()
-                    pygame.time.wait(100) #es como time sleep pero en milisegundos
+                    pygame.time.wait(1000) #es como time sleep pero en milisegundos
                     self.text_module.show_message(self.audio_module.words[syllable_idx-1])
                     pygame.display.flip()
                     self.audio_module.play_sound(self.audio_module.audio_word[syllable_idx-1])
