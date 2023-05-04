@@ -81,21 +81,23 @@ class AudioModule:
 class App:
     def __init__(self):
         pygame.init()
-        self.screen_width, self.screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
-        #self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-        self.clock = pygame.time.Clock()
-        self.text_module = TextModule(self.screen,self.screen_width, self.screen_height, "C:/Users/Usuario/Documents/DreamTech/data/Instrucciones.txt", "arialblack.ttf")
-        self.audio_module = AudioModule("C:/Users/Usuario/Documents/DreamTech/data/data.json")
+        screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
+        self.screen = pygame.display.set_mode((screen_width, screen_height))
+        self.text_module = TextModule(self.screen,self.screen.get_width(), self.screen.get_height(), "./data/Instrucciones.txt", "arialblack.ttf") # USAR RUTAS RELATIVAS
+        self.audio_module = AudioModule("./data/data.json") # USAR RUTAS RELATIVAS
         self.running = True
-        self.counter = 0
-        self.i = 0
+        self.gamestate = "start"
+        self.train_idx = 0
+        self.test_idx = 0
 
     def wait_for_space(self):
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    self.counter=1
+                    self.gamestate = "test"
+                    return event.key
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    self.running=False
                     return event.key
                 
     def wait_for_escape(self):
@@ -121,8 +123,47 @@ class App:
         self.screen.blit(image, image_rect)
         pygame.display.flip()
 
+    def start_screen(self):
+        # TODO: Add login
+        self.text_module.show_message("Va a ver una lista de palabras, preste atención", big_font=False)
+        self.wait_ticks(5)
+        self.gamestate = "train"
+
+    def show_word_list(self):
+        word_idx = self.audio_module.display_order[self.train_idx]
+        self.screen.fill((255,255,255))
+        pygame.display.flip()
+        self.audio_module.play_sound(self.audio_module.audio_context[word_idx-1])
+        self.wait_ticks(3)
+        self.text_module.show_message(self.audio_module.words[word_idx-1])
+        self.audio_module.play_sound(self.audio_module.audio_word[word_idx-1])
+        self.wait_ticks(1.5)
+        
+        
+    def test_word_list(self):
+        syllable_idx = self.audio_module.testing_order[self.test_idx]
+        self.screen.fill((255,255,255))
+        pygame.display.flip()
+        self.wait_ticks(1)
+        self.audio_module.play_sound(self.audio_module.audio_context[syllable_idx-1])
+        self.wait_ticks(3)
+        self.text_module.show_message(self.audio_module.sil[syllable_idx-1])
+        self.audio_module.play_sound(self.audio_module.audio_sil[syllable_idx-1])
+        self.wait_ticks(1.5)
+        self.show_image("assets/images/mic.png")
+        self.audio_module.record_voice(self.audio_module.words[syllable_idx-1])
+        self.screen.fill((255,255,255))
+        pygame.display.flip()
+        self.wait_ticks(1)
+        self.text_module.show_message(self.audio_module.words[syllable_idx-1])
+        self.audio_module.play_sound(self.audio_module.audio_word[syllable_idx-1])
+        self.wait_ticks(2)
+        pygame.display.flip()
+
+
     def run(self):
         while self.running:
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
@@ -130,50 +171,27 @@ class App:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
                         sys.exit()
-                    if event.key == pygame.K_SPACE:
-                        self.counter==1
-                        
-            
-            self.text_module.show_message("Vas a ver una lista de palabras, presta atención")
-            if self.counter==0:
-                for _, word_idx in enumerate(self.audio_module.display_order):
-                    self.screen.fill((255,255,255))
-                    pygame.display.flip()
-                    self.audio_module.play_sound(self.audio_module.audio_context[word_idx-1])
-                    #self.wait_ticks(self.clock,3) #No se porque con esto no anda
-                    pygame.time.wait(3*1000) #es como time sleep pero en milisegundos
-                    self.text_module.show_message(self.audio_module.words[word_idx-1])
-                    self.audio_module.play_sound(self.audio_module.audio_word[word_idx-1])
-                    pygame.time.wait(1500) #es como time sleep pero en milisegundos
-            
-            self.text_module.show_message("Presione ESPACIO para continuar a la segunda parte")
-            self.wait_for_space()
-            
-            if self.counter==1:
-                for _, syllable_idx in enumerate(self.audio_module.testing_order):
-                    self.screen.fill((255,255,255))
-                    pygame.display.flip()
-                    pygame.time.wait(1000) #es como time sleep pero en milisegundos
-                    self.audio_module.play_sound(self.audio_module.audio_context[syllable_idx-1])
-                    #self.wait_ticks(self.clock,3) #No se porque con esto no anda
-                    pygame.time.wait(3*1000) #es como time sleep pero en milisegundos
-                    self.text_module.show_message(self.audio_module.sil[syllable_idx-1])
-                    self.audio_module.play_sound(self.audio_module.audio_sil[syllable_idx-1])
-                    pygame.time.wait(1500) #es como time sleep pero en milisegundos
-                    self.show_image("assets/images/mic.png")
-                    self.audio_module.record_voice(self.audio_module.words[syllable_idx-1])
-                    #pygame.time.wait(2*1000) #es como time sleep pero en milisegundos
-                    self.screen.fill((255,255,255))
-                    pygame.display.flip()
-                    pygame.time.wait(1000) #es como time sleep pero en milisegundos
-                    self.text_module.show_message(self.audio_module.words[syllable_idx-1])
-                    pygame.display.flip()
-                    self.audio_module.play_sound(self.audio_module.audio_word[syllable_idx-1])
-                  
 
-            self.text_module.show_message("Presione ESC para cerrar")
-            self.wait_for_escape
+            if self.gamestate == 'start':
+                self.start_screen()
 
+            elif self.gamestate == 'train':
+                if self.train_idx >= len(self.audio_module.display_order):
+                    self.text_module.show_message("Presione ESPACIO para continuar a la segunda parte", big_font=False)
+                    self.wait_for_space()
+                else:
+                    self.show_word_list()
+                    self.train_idx += 1
+
+            elif self.gamestate == 'test':
+                if self.test_idx >= len(self.audio_module.testing_order):
+                    self.text_module.show_message("Presione ESC para cerrar", big_font=False)
+                    self.wait_for_escape()
+                else:
+                    self.test_word_list()
+                    self.test_idx += 1
+                
+            pygame.display.flip()
 
 if __name__ == '__main__':
     app = App()
