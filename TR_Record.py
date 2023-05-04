@@ -14,13 +14,17 @@ class TextModule:
         with open(instruction_file_path) as f:
             self.instructions = f.read().split('#')
         self.font = pygame.font.SysFont(font_file_path, 90)
+        self.smaller_font = pygame.font.SysFont(font_file_path, 60)
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.screen=screen
         self.text_surface = None
 
-    def render_text(self, text, center=None):
-        self.text_surface = self.font.render(text, True, (0, 0, 0))
+    def render_text(self, text, center=None, big_font=True):
+        if big_font:
+            self.text_surface = self.font.render(text, True, (0, 0, 0))
+        else:
+            self.text_surface = self.smaller_font.render(text, True, (0, 0, 0))
         if center:
             self.text_rect = self.text_surface.get_rect(center=center)
 
@@ -28,8 +32,8 @@ class TextModule:
         screen.fill((255, 255, 255))
         screen.blit(self.text_surface, self.text_rect)
 
-    def show_message(self, message):
-        self.render_text(message, center=(self.screen_width//2, self.screen_height//2))
+    def show_message(self, message, big_font=True):
+        self.render_text(message, center=(self.screen_width//2, self.screen_height//2), big_font=big_font)
         self.draw(self.screen)
         pygame.display.flip()
 
@@ -70,8 +74,6 @@ class AudioModule:
             os.makedirs(f'out/TR_sujeto')
 
         write(file_name, fs, recording)  # Save as WAV file
-        
-        
         #return file_name
 
 
