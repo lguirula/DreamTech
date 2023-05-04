@@ -105,7 +105,8 @@ class App:
                     self.running=False
                     return event.key
                 
-    def wait_ticks(self,clock, seconds):
+    def wait_ticks(self, seconds):
+        clock = pygame.time.Clock()
         ticks=seconds*60
         ticks_elapsed = 0
         while ticks_elapsed < ticks:
