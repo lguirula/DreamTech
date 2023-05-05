@@ -9,8 +9,6 @@ import pygame_textinput
 
 class TextModule:
     def __init__(self,screen, screen_width, screen_height, instruction_file_path, font_file_path):
-        #self.screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
-        #self.screen = pygame.display.set_mode((screen_width, screen_height))
         with open(instruction_file_path) as f:
             self.instructions = f.read().split('#')
         self.font = pygame.font.SysFont(font_file_path, 90)
@@ -80,11 +78,9 @@ class AudioModule:
             os.makedirs(f'out/TR_{sujeto}')
 
         write(file_name, fs, recording)  # Save as WAV file
-        #return file_name
 
 
-
-class App:
+class TR_Record:
     def __init__(self):
         pygame.init()
         screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
@@ -141,7 +137,7 @@ class App:
     def start_screen(self):
         self.text_module.show_message("Va a ver una lista de palabras, preste atención", big_font=False)
         self.wait_ticks(5)
-        self.gamestate = "test"
+        self.gamestate = "train"
 
     def show_word_list(self):
         word_idx = self.audio_module.display_order[self.train_idx]
@@ -151,7 +147,7 @@ class App:
         self.wait_ticks(3)
         self.text_module.show_message(self.audio_module.words[word_idx-1])
         self.audio_module.play_sound(self.audio_module.audio_word[word_idx-1])
-        self.wait_ticks(1.5)
+        self.wait_ticks(3)
         
         
     def test_word_list(self):
@@ -215,5 +211,5 @@ class App:
             pygame.display.flip()
 
 if __name__ == '__main__':
-    app = App()
+    app = TR_Record()
     app.run()

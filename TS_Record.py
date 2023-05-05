@@ -5,32 +5,40 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 from datetime import datetime
 import sys
-
+import pygame_textinput
 
 class TextModule:
     def __init__(self,screen, screen_width, screen_height, instruction_file_path, font_file_path):
-        #self.screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
-        #self.screen = pygame.display.set_mode((screen_width, screen_height))
         with open(instruction_file_path) as f:
             self.instructions = f.read().split('#')
         self.font = pygame.font.SysFont(font_file_path, 90)
+        self.smaller_font = pygame.font.SysFont(font_file_path, 60)
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.screen=screen
         self.text_surface = None
 
-    def render_text(self, text, center=None):
-        self.text_surface = self.font.render(text, True, (0, 0, 0))
+    def render_text(self, text, center=None, big_font=True):
+        if big_font:
+            self.text_surface = self.font.render(text, True, (0, 0, 0))
+        else:
+            self.text_surface = self.smaller_font.render(text, True, (0, 0, 0))
         if center:
             self.text_rect = self.text_surface.get_rect(center=center)
 
-    def draw(self, screen):
-        screen.fill((255, 255, 255))
-        screen.blit(self.text_surface, self.text_rect)
+    def draw(self):
+        self.screen.fill((255, 255, 255))
+        self.screen.blit(self.text_surface, self.text_rect)
 
-    def show_message(self, message):
-        self.render_text(message, center=(self.screen_width//2, self.screen_height//2))
-        self.draw(self.screen)
+    def draw_no_bkg(self):
+        self.screen.blit(self.text_surface, self.text_rect)
+
+    def show_message(self, message, big_font=True, no_bkg=False):
+        self.render_text(message, center=(self.screen_width//2, self.screen_height//2), big_font=big_font)
+        if no_bkg:
+            self.draw_no_bkg()
+        else:
+            self.draw()
         pygame.display.flip()
 
 
@@ -50,7 +58,7 @@ class AudioModule:
         sound = pygame.mixer.Sound(audio_file)
         sound.play()
 
-    def record_voice(self, word,duration=5):
+    def record_voice(self, word, duration=5, sujeto="sujeto"):
         # Set the sampling frequency and number of channels
         fs = 44100
         channels = 2
@@ -65,35 +73,35 @@ class AudioModule:
         sd.wait()
 
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        file_name = f'out/TR_sujeto/{word}_{timestamp}.wav'
-        if not os.path.exists(f'out/TR_sujeto'):
-            os.makedirs(f'out/TR_sujeto')
+        file_name = f'out/TR_{sujeto}/{word}_{timestamp}.wav'
+        if not os.path.exists(f'out/TR_{sujeto}'):
+            os.makedirs(f'out/TR_{sujeto}')
 
         write(file_name, fs, recording)  # Save as WAV file
-        
-        
-        #return file_name
 
 
-
-class App:
+class TS_Record:
     def __init__(self):
         pygame.init()
-        self.screen_width, self.screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
-        #self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-        self.clock = pygame.time.Clock()
-        self.text_module = TextModule(self.screen,self.screen_width, self.screen_height, "C:/Users/Usuario/Documents/DreamTech/data/Instrucciones.txt", "arialblack.ttf")
-        self.audio_module = AudioModule("C:/Users/Usuario/Documents/DreamTech/data/data.json")
+        screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
+        self.screen = pygame.display.set_mode((screen_width, screen_height))
+        self.text_module = TextModule(self.screen,self.screen.get_width(), self.screen.get_height(), "./data/Instrucciones.txt", "arialblack.ttf") # USAR RUTAS RELATIVAS
+        self.audio_module = AudioModule("./data/data.json") # USAR RUTAS RELATIVAS
         self.running = True
-        self.counter = 0
-
+        self.gamestate = "login"
+        self.train_idx = 0
+        self.test_idx = 0
+        self.textinput = pygame_textinput.TextInputVisualizer()
+        self.rect = pygame.Rect(self.screen.get_width()/2-290, self.screen.get_height()/2+30, 580, 80)
 
     def wait_for_space(self):
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    self.counter=1
+                    self.gamestate = "test"
+                    return event.key
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    self.running=False
                     return event.key
                 
     def wait_for_escape(self):
@@ -103,7 +111,8 @@ class App:
                     self.running=False
                     return event.key
                 
-    def wait_ticks(self,clock, seconds):
+    def wait_ticks(self, seconds):
+        clock = pygame.time.Clock()
         ticks=seconds*60
         ticks_elapsed = 0
         while ticks_elapsed < ticks:
@@ -118,42 +127,66 @@ class App:
         self.screen.blit(image, image_rect)
         pygame.display.flip()
 
+    def login_screen(self):
+        self.screen.fill((255, 255, 255))
+        self.textinput.update(self.events)
+        self.screen.blit(self.textinput.surface, (self.screen.get_width()/2-270, self.screen.get_height()/2+60))
+        pygame.draw.rect(self.screen, pygame.Color(0,0,0), self.rect, 4)
+        self.text_module.show_message("Inserte código del sujeto", big_font=False, no_bkg=True)
+
+    def start_screen(self):
+        self.text_module.show_message("Presione ESPACIO para empezar", big_font=False)
+        self.wait_for_space()
+      
+    def test_word_list(self):
+        syllable_idx = self.audio_module.testing_order[self.test_idx]
+        self.screen.fill((255,255,255))
+        pygame.display.flip()
+        self.wait_ticks(1)
+        self.audio_module.play_sound(self.audio_module.audio_context[syllable_idx-1])
+        self.wait_ticks(3)
+        self.text_module.show_message(self.audio_module.sil[syllable_idx-1])
+        self.audio_module.play_sound(self.audio_module.audio_sil[syllable_idx-1])
+        self.wait_ticks(1.5)
+        self.show_image("assets/images/mic.png")
+        self.audio_module.record_voice(self.audio_module.words[syllable_idx-1], sujeto=self.textinput.value)
+        self.screen.fill((255,255,255))
+        pygame.display.flip()
+        self.wait_ticks(2)
+        pygame.display.flip()
+
+
     def run(self):
         while self.running:
-            for event in pygame.event.get():
+            self.events = pygame.event.get()
+
+            for event in self.events:
                 if event.type == pygame.QUIT:
                     self.running = False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
                         sys.exit()
-                    if event.key == pygame.K_SPACE:
-                        self.counter==1
-                        
-            
-            self.text_module.show_message("Vas a ver una lista de palabras, presta atención")
-            self.text_module.show_message("Presione ESPACIO para continuar ")
-            self.wait_for_space()
-            
-            if self.counter==1:
-                for _, syllable_idx in enumerate(self.audio_module.testing_order):
-                    self.screen.fill((255,255,255))
-                    pygame.display.flip()
-                    pygame.time.wait(1000) #es como time sleep pero en milisegundos
-                    self.audio_module.play_sound(self.audio_module.audio_context[syllable_idx-1])
-                    #self.wait_ticks(self.clock,3) #No se porque con esto no anda
-                    pygame.time.wait(3*1000) #es como time sleep pero en milisegundos
-                    self.show_image("assets/images/mic.png")
-                    self.audio_module.record_voice(self.audio_module.words[syllable_idx-1])
-                    #pygame.time.wait(2*1000) #es como time sleep pero en milisegundos
-                    self.screen.fill((255,255,255))
-                    pygame.display.flip()
-                    pygame.time.wait(1000) #es como time sleep pero en milisegundos
+                    if event.key == pygame.K_RETURN:
+                        if self.gamestate == 'login' and len(self.textinput.value) > 0:
+                            self.gamestate = 'start'
 
-            self.text_module.show_message("Presione ESC para cerrar")
-            self.wait_for_escape
+            if self.gamestate == 'login':
+                self.login_screen()
+            
+            elif self.gamestate == 'start':
+                self.start_screen()
 
+            elif self.gamestate == 'test':
+                if self.test_idx >= len(self.audio_module.testing_order):
+                    self.text_module.show_message("Presione ESC para cerrar", big_font=False)
+                    self.wait_for_escape()
+                else:
+                    self.test_word_list()
+                    self.test_idx += 1
+                
+            pygame.display.flip()
 
 if __name__ == '__main__':
-    app = App()
+    app = TS_Record()
     app.run()
