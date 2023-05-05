@@ -5,7 +5,7 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 from datetime import datetime
 import sys
-
+import pygame_textinput
 
 class TextModule:
     def __init__(self,screen, screen_width, screen_height, instruction_file_path, font_file_path):
@@ -28,13 +28,19 @@ class TextModule:
         if center:
             self.text_rect = self.text_surface.get_rect(center=center)
 
-    def draw(self, screen):
-        screen.fill((255, 255, 255))
-        screen.blit(self.text_surface, self.text_rect)
+    def draw(self):
+        self.screen.fill((255, 255, 255))
+        self.screen.blit(self.text_surface, self.text_rect)
 
-    def show_message(self, message, big_font=True):
+    def draw_no_bkg(self):
+        self.screen.blit(self.text_surface, self.text_rect)
+
+    def show_message(self, message, big_font=True, no_bkg=False):
         self.render_text(message, center=(self.screen_width//2, self.screen_height//2), big_font=big_font)
-        self.draw(self.screen)
+        if no_bkg:
+            self.draw_no_bkg()
+        else:
+            self.draw()
         pygame.display.flip()
 
 
@@ -54,7 +60,7 @@ class AudioModule:
         sound = pygame.mixer.Sound(audio_file)
         sound.play()
 
-    def record_voice(self, word,duration=5):
+    def record_voice(self, word, duration=5, sujeto="sujeto"):
         # Set the sampling frequency and number of channels
         fs = 44100
         channels = 2
@@ -69,9 +75,9 @@ class AudioModule:
         sd.wait()
 
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        file_name = f'out/TR_sujeto/{word}_{timestamp}.wav'
-        if not os.path.exists(f'out/TR_sujeto'):
-            os.makedirs(f'out/TR_sujeto')
+        file_name = f'out/TR_{sujeto}/{word}_{timestamp}.wav'
+        if not os.path.exists(f'out/TR_{sujeto}'):
+            os.makedirs(f'out/TR_{sujeto}')
 
         write(file_name, fs, recording)  # Save as WAV file
         #return file_name
@@ -86,9 +92,11 @@ class App:
         self.text_module = TextModule(self.screen,self.screen.get_width(), self.screen.get_height(), "./data/Instrucciones.txt", "arialblack.ttf") # USAR RUTAS RELATIVAS
         self.audio_module = AudioModule("./data/data.json") # USAR RUTAS RELATIVAS
         self.running = True
-        self.gamestate = "start"
+        self.gamestate = "login"
         self.train_idx = 0
         self.test_idx = 0
+        self.textinput = pygame_textinput.TextInputVisualizer()
+        self.rect = pygame.Rect(self.screen.get_width()/2-290, self.screen.get_height()/2+30, 580, 80)
 
     def wait_for_space(self):
         while True:
@@ -123,11 +131,17 @@ class App:
         self.screen.blit(image, image_rect)
         pygame.display.flip()
 
+    def login_screen(self):
+        self.screen.fill((255, 255, 255))
+        self.textinput.update(self.events)
+        self.screen.blit(self.textinput.surface, (self.screen.get_width()/2-270, self.screen.get_height()/2+60))
+        pygame.draw.rect(self.screen, pygame.Color(0,0,0), self.rect, 4)
+        self.text_module.show_message("Inserte código del sujeto", big_font=False, no_bkg=True)
+
     def start_screen(self):
-        # TODO: Add login
         self.text_module.show_message("Va a ver una lista de palabras, preste atención", big_font=False)
         self.wait_ticks(5)
-        self.gamestate = "train"
+        self.gamestate = "test"
 
     def show_word_list(self):
         word_idx = self.audio_module.display_order[self.train_idx]
@@ -151,7 +165,7 @@ class App:
         self.audio_module.play_sound(self.audio_module.audio_sil[syllable_idx-1])
         self.wait_ticks(1.5)
         self.show_image("assets/images/mic.png")
-        self.audio_module.record_voice(self.audio_module.words[syllable_idx-1])
+        self.audio_module.record_voice(self.audio_module.words[syllable_idx-1], sujeto=self.textinput.value)
         self.screen.fill((255,255,255))
         pygame.display.flip()
         self.wait_ticks(1)
@@ -163,16 +177,23 @@ class App:
 
     def run(self):
         while self.running:
+            self.events = pygame.event.get()
 
-            for event in pygame.event.get():
+            for event in self.events:
                 if event.type == pygame.QUIT:
                     self.running = False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
                         sys.exit()
+                    if event.key == pygame.K_RETURN:
+                        if self.gamestate == 'login' and len(self.textinput.value) > 0:
+                            self.gamestate = 'start'
 
-            if self.gamestate == 'start':
+            if self.gamestate == 'login':
+                self.login_screen()
+            
+            elif self.gamestate == 'start':
                 self.start_screen()
 
             elif self.gamestate == 'train':
