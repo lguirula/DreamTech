@@ -27,7 +27,7 @@ click = False
 def main_menu():
     while True:
         screen.fill((255, 255, 255))
-        draw_text('main menu', font, (0, 0, 0), screen, 20, 20)
+        draw_text('DreamTech', font, (0, 0, 0), screen, 20, 20)
 
         mx, my = pygame.mouse.get_pos()
 
@@ -42,16 +42,18 @@ def main_menu():
 
         if button_1.collidepoint((mx, my)):
             if click:
-                exec(open("TR_Record.py").read())  # Ejecutar el código del juego
+                app = TR_Record()
+                app.run()
         if button_2.collidepoint((mx, my)):
             if click:
-                exec(open("TS_Record.py").read())  # Ejecutar el código de las opciones
+                app = TS_Record()
+                app.run()
         
         pygame.draw.rect(screen, (0, 0, 0), button_1)
         pygame.draw.rect(screen, (0, 0, 0), button_2)
 
-        draw_text('Training', font, (255, 255, 255), screen, button_x  , button_1_y )
-        draw_text('Testing', font, (255, 255, 255), screen, button_x , button_2_y )
+        draw_text('Training', font, (255, 255, 255), screen, button_x+55, button_1_y+25)
+        draw_text('Testing', font, (255, 255, 255), screen, button_x+60, button_2_y+25)
 
         click = False
         for event in pygame.event.get():
