@@ -73,9 +73,9 @@ class AudioModule:
         sd.wait()
 
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        file_name = f'out/TR_{sujeto}/{word}_{timestamp}.wav'
-        if not os.path.exists(f'out/TR_{sujeto}'):
-            os.makedirs(f'out/TR_{sujeto}')
+        file_name = f'out/TS_{sujeto}/{word}_{timestamp}.wav'
+        if not os.path.exists(f'out/TS_{sujeto}'):
+            os.makedirs(f'out/TS_{sujeto}')
 
         write(file_name, fs, recording)  # Save as WAV file
 
