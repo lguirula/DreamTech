@@ -35,10 +35,10 @@ Experiment description.
         ```
         
 4. **Run the program.**
-    1. For the experiment:
+    1. For the experiments:
         
         ```bash
-        python .\main.py
+        python .\menuBotones.py
         ```
 
     2. For PyQT5Designer:
@@ -56,6 +56,7 @@ Since JSON is a data-only format, it doesn’t support comments. The turnaround 
 
 ```json
 {
+    "_this_is_a_comment": "data_label_1 options are this and that",
     "data_label_1": [],
     "data_label_2": ""
 }
